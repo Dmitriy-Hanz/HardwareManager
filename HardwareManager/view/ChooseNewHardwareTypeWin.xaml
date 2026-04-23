@@ -1,0 +1,99 @@
+﻿<Window x:Class="HardwareManager.view.ChooseNewHardwareTypeWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:HardwareManager.view"
+            xmlns:vm="clr-namespace:HardwareManager.viewModel"
+        mc:Ignorable="d"
+        Title="ChooseNewHardwareTypeWin" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <vm:ChooseNewHardwareTypeVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/view/resources/MyResources.xaml"/>
+    </Window.Resources>
+    <Grid x:Name="WindowMainContainer" Height="400" Width="780">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Visible" RenderTransformOrigin="0.5,0.5" IsDeferredScrollingEnabled="True">
+            <ScrollViewer.RenderTransform>
+                <ScaleTransform ScaleX="-1"/>
+            </ScrollViewer.RenderTransform>
+            <StackPanel RenderTransformOrigin="0.5,0.5">
+                <StackPanel.RenderTransform>
+                    <ScaleTransform ScaleX="-1"/>
+                </StackPanel.RenderTransform>
+                <Expander Style="{StaticResource ExpanderStyle1Vertical}" FontSize="16" Margin="10" VerticalAlignment="Top" IsExpanded="True" HorizontalContentAlignment="Stretch">
+                    <Expander.Header>
+                        <UniformGrid Rows="1">
+                            <TextBlock Text="ОСНОВНОЕ"/>
+                            <Image HorizontalAlignment="Right" Height="20" Width="20" Source="/resources/images/tooltipIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" ToolTip="Компьютер, монитор, клавиатура, мышь..." ToolTipService.InitialShowDelay="0"/>
+                        </UniformGrid>
+                    </Expander.Header>
+                    <WrapPanel Orientation="Horizontal" Margin="10">
+                        <Button CommandParameter="Computer" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="Monitor" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="Keyboard" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="Mouse" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                    </WrapPanel>
+                </Expander>
+                <Expander Style="{StaticResource ExpanderStyle1Vertical}" FontSize="16" Margin="10,0" VerticalAlignment="Top" IsExpanded="True">
+                    <Expander.Header>
+                        <UniformGrid Rows="1">
+                            <TextBlock Text="МАЛАЯ ПЕРИФЕРИЯ"/>
+                            <Image HorizontalAlignment="Right" Height="20" Width="20" Source="/resources/images/tooltipIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" ToolTip="Камера, наушники..." ToolTipService.InitialShowDelay="0"/>
+                        </UniformGrid>
+                    </Expander.Header>
+                    <WrapPanel Orientation="Horizontal" Margin="10">
+                        <Button CommandParameter="Camera" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="Headphones" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                    </WrapPanel>
+                </Expander>
+                <Expander Style="{StaticResource ExpanderStyle1Vertical}" FontSize="16" Margin="10" VerticalAlignment="Top" IsExpanded="True">
+                    <Expander.Header>
+                        <UniformGrid Rows="1">
+                            <TextBlock Text="КРУПНАЯ ПЕРИФЕРИЯ"/>
+                            <Image HorizontalAlignment="Right" Height="20" Width="20" Source="/resources/images/tooltipIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" ToolTip="Принтер, телефон..." ToolTipService.InitialShowDelay="0"/>
+                        </UniformGrid>
+                    </Expander.Header>
+                    <WrapPanel Orientation="Horizontal" Margin="10">
+                        <Button CommandParameter="Printer" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="WiredTelephone" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                    </WrapPanel>
+                </Expander>
+                <Expander Style="{StaticResource ExpanderStyle1Vertical}" FontSize="16" Margin="10,0" VerticalAlignment="Top" IsExpanded="True">
+                    <Expander.Header>
+                        <UniformGrid Rows="1">
+                            <TextBlock Text="ДРУГОЕ"/>
+                            <Image HorizontalAlignment="Right" Height="20" Width="20" Source="/resources/images/tooltipIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" ToolTip="Удлинитель, источник бесперебойного питания..." ToolTipService.InitialShowDelay="0"/>
+                        </UniformGrid>
+                    </Expander.Header>
+                    <WrapPanel Orientation="Horizontal" Margin="10">
+                        <Button CommandParameter="BackupBattery" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="SurgeProtector" Command="{Binding Path=SelectHardwareTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                    </WrapPanel>
+                </Expander>
+                <Expander Style="{StaticResource ExpanderStyle1Vertical}" FontSize="16" Margin="10" VerticalAlignment="Top" IsExpanded="True">
+                    <Expander.Header>
+                        <UniformGrid Rows="1">
+                            <TextBlock Text="ПРОВОДА, КАБЕЛИ, АДАПТЕРЫ"/>
+                            <Image HorizontalAlignment="Right" Height="20" Width="20" Source="/resources/images/tooltipIcon.png" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" ToolTip="Кабель, адаптер..." ToolTipService.InitialShowDelay="0"/>
+                        </UniformGrid>
+                    </Expander.Header>
+                    <WrapPanel Orientation="Horizontal" Margin="10">
+                        <Button CommandParameter="Cable" Command="{Binding Path=SelectWireTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                        <Button CommandParameter="AdapterCable" Command="{Binding Path=SelectWireTypeCommand}" Style="{StaticResource ButtonForHardwareStyle}"/>
+                    </WrapPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Separator Grid.Row="1" VerticalAlignment="Top" Height="1" Margin="0" Background="Black"/>
+        <Button Grid.Row="1" Style="{DynamicResource ButtonPrimary}" Content="Отмена" HorizontalAlignment="Center" Width="300" Command="{Binding Path=CancelCommand}"/>
+
+    </Grid>
+</Window>

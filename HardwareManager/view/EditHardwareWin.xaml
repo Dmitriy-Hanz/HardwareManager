@@ -1,0 +1,337 @@
+﻿ <Window x:Class="HardwareManager.view.EditHardwareWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:HardwareManager.view"
+            xmlns:vm="clr-namespace:HardwareManager.viewModel"
+            xmlns:mm="clr-namespace:HardwareManager.model"
+            xmlns:conv="clr-namespace:HardwareManager.infrastructure.utils.converters"
+        mc:Ignorable="d"
+        Title="EditHardwareWin" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <vm:EditHardwareVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/view/resources/MyResources.xaml"/>
+        <!--<ResourceDictionary Source="/view/resources/JustForTestsR.xaml"/>-->
+    </Window.Resources>
+    <Grid x:Name="WindowMainContainer" Height="500" MinHeight="500" Width="700">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="20" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border Height="200" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
+                <Grid>
+                    <Image RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Source="/resources/images/noImageForHardware.png"/>
+                    <Image Source="{Binding Path=HardwareView.HardwareImage, Converter={conv:BytesToImageConverter}}" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill"/>
+                </Grid>
+            </Border>
+            <Button DockPanel.Dock="Top" Style="{StaticResource ButtonSecondary}" Content="Загрузить изображение" FontSize="14" Command="{Binding Path=AddImageCommand}" Margin="0,5"/>
+            <Button Style="{StaticResource ButtonSecondary}" Content="Удалить изображение" FontSize="14" Command="{Binding Path=DeleteHardwareImageCommand}" Visibility="{Binding Path=DeleteHardwareImageButtonVisibility}"/>
+        </DockPanel>
+        <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource ButtonPrimary}" Content="Сохранить" Command="{Binding Path=SaveCommand}" Margin="20,0" VerticalAlignment="Bottom"/>
+        <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource ButtonPrimary}" Content="Выйти" Command="{Binding Path=ExitCommand}" Margin="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200"/>
+
+
+        <DockPanel Grid.Column="1" Grid.RowSpan="3">
+            <TextBlock Text="{Binding Path=HardwareHeaderText, StringFormat='\{0\}:'}" DockPanel.Dock="Top" FontSize="30" FontFamily="Segoe UI Black" TextWrapping="Wrap" Foreground="#FF131373" Margin="0,8,0,0"/>
+            <TextBox Text="{Binding Path=HardwareView.Model}" MaxLength="70" Style="{StaticResource TextBoxMediumStyle}" DockPanel.Dock="Top" Margin="0,5,20,0"/>
+            <DockPanel DockPanel.Dock="Top" Margin="0,5,20,5">
+                <TextBlock Text="Инв. номер: " Width="100" FontSize="15" Foreground="#FF131373" HorizontalAlignment="Left" FontFamily="Tahoma" FontWeight="Bold"/>
+                <TextBox Text="{Binding Path=HardwareView.InventorialNumber}" MaxLength="9" Style="{StaticResource TextBoxMediumStyle}" HorizontalAlignment="Left" Width="100" IsReadOnly="{Binding Path=IsInventorialNumberTBReadOnly}"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Visibility="{Binding Path=HardwareStatusPanelVisibility}">
+                    <TextBlock Text="Статус: " FontSize="15" Foreground="#FF131373" FontWeight="Bold" FontFamily="Tahoma"/>
+                    <TextBox Text="{Binding Path=HardwareView.InventorialStatus}" Style="{StaticResource TextBoxMediumStyle}" Width="120" IsReadOnly="True"/>
+                </StackPanel>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Top" Margin="0,0,20,0">
+                <Button Style="{StaticResource ButtonSecondarySmall}" Content="Сгенерировать номер" Command="{Binding Path=GenerateInventorialNumberCommand}" Visibility="{Binding Path=GenerateInventorialNumberButtonVisibility}" Width="200" HorizontalAlignment="Left"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Visibility="{Binding Path=MarkAsButtonPanelVisibility}">
+                    <Button Style="{StaticResource ButtonSecondary}" Width="180" Content="Пометить неисправным" FontSize="14" Command="{Binding Path=MarkAsDefectiveCommand}" Visibility="{Binding Path=MarkAsDefectiveButtonVisibility}"/>
+                    <Button Style="{StaticResource ButtonSecondary}" Width="180" Content="Пометить исправным" FontSize="14" Command="{Binding Path=MarkAsServiceableCommand}" Visibility="{Binding Path=MarkAsDefectiveButtonVisibility, Converter={StaticResource ReverseValueConverter}}"/>
+                </StackPanel>
+            </DockPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,20">
+                <Grid Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ScrollViewer}, Path=ActualWidth}">
+                    <DockPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Computer}" Margin="0,0,20,0">
+                        <GroupBox DockPanel.Dock="Top" Header="Процессор" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button DockPanel.Dock="Top" Style="{StaticResource ButtonSecondarySmall}" Content="Добавить" Command="{Binding Path=AddCpuCommand}" Width="150" HorizontalAlignment="Left" Visibility="{Binding AddCpuButtonVisibility}"/>
+                                    <Button DockPanel.Dock="Top" Style="{StaticResource ButtonSecondarySmall}" Content="Удалить" Command="{Binding Path=DeleteCpuCommand}" Width="150" HorizontalAlignment="Left" Visibility="{Binding AddCpuButtonVisibility, Converter={StaticResource ReverseValueConverter}}"/>
+                                </StackPanel>
+                                <DockPanel Margin="0,15,0,0" Visibility="{Binding AddCpuButtonVisibility, Converter={StaticResource ReverseValueConverter}}">
+                                    <Image Height="64" VerticalAlignment="Top" Width="64" Source="/resources/images/baseCpuImg.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,10,0"/>
+                                    <TextBox DockPanel.Dock="Top" DataContext="{Binding Path=ComputerView.Cpu}" Text="{Binding Name}" Style="{StaticResource TextBoxMediumStyle}" Margin="0,0,0,5"/>
+                                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                        <TextBlock Text="Число ядер:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                        <TextBox DataContext="{Binding Path=ComputerView.Cpu}" Text="{Binding CoreCount}" Style="{StaticResource TextBoxMediumStyle}" Width="40" HorizontalAlignment="Left"/>
+                                        <ComboBox DataContext="{Binding Path=ComputerView.Cpu}" Text="{Binding CashMemoryType}" ItemsSource="{x:Static mm:StaticCatalogs.CashMemoryTypeCatalog}" DockPanel.Dock="Right" Style="{StaticResource ComboBoxMediumStyle}" Width="50" Padding="5,3,0,0" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="Тип кэш-памяти:  " DockPanel.Dock="Right" Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Right"/>
+                                    </DockPanel>
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <TextBlock Text="Объем кэш-памяти (МБ):  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                        <TextBox DataContext="{Binding Path=ComputerView.Cpu}" Text="{Binding CashMemoryValue}" Style="{StaticResource TextBoxMediumStyle}" Width="100" HorizontalAlignment="Left"/>
+                                    </DockPanel>
+
+                                </DockPanel>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox DockPanel.Dock="Top" Header="Графические адаптеры" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top">
+                            <StackPanel>
+                                <Button Style="{StaticResource ButtonSecondarySmall}" Content="Добавить" Command="{Binding Path=AddGraphicalAdapterCommand}" Width="150" HorizontalAlignment="Left"/>
+                                <ListBox Style="{StaticResource ListBoxNoScrollStyle}" ItemContainerStyle="{StaticResource UnselectableListBoxItemStyle}" Margin="0,15,0,0" ItemsSource="{Binding Path=ComputerView.GraphicalAdapters}" HorizontalContentAlignment="Stretch" ScrollViewer.CanContentScroll="False" Focusable="False">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,0,0,5">
+                                                <StackPanel Width="64" Margin="0,0,10,0" VerticalAlignment="Top">
+                                                    <Image Height="64" Width="64" Margin="0,0,0,5" Source="/resources/images/baseGraphicalAdapterImg.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    <Button Style="{StaticResource ButtonSecondarySmall}" Content="Удалить" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=DeleteGraphicalAdapterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}"/>
+                                                </StackPanel>
+                                                <TextBox DockPanel.Dock="Top" Text="{Binding Path=Model}" Style="{StaticResource TextBoxMediumStyle}" Margin="0,0,0,5" TextWrapping="Wrap"/>
+                                                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                                    <TextBlock Text="Граф. процессор:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <TextBox Text="{Binding GraphicalProcessor}" Style="{StaticResource TextBoxMediumStyle}"/>
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <TextBlock Text="Видеопамять (ГБ):  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <TextBox Text="{Binding RamMemory}" Style="{StaticResource TextBoxMediumStyle}" Width="70" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox DockPanel.Dock="Top" Header="Физические диски" VerticalAlignment="Top" Style="{StaticResource GroupBoxMediumStyle}">
+                            <StackPanel>
+                                <Button Style="{StaticResource ButtonSecondarySmall}" Content="Добавить" Command="{Binding Path=AddPhisicalDiskCommand}" Width="150" HorizontalAlignment="Left"/>
+                                <ListBox Style="{StaticResource ListBoxNoScrollStyle}" ItemContainerStyle="{StaticResource UnselectableListBoxItemStyle}" Margin="0,15,0,0" ItemsSource="{Binding Path=ComputerView.PhisicalDisks}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Name="DiskType_CB" Margin="0,0,0,5">
+                                                <StackPanel Width="64" Margin="0,0,10,0" VerticalAlignment="Top">
+                                                    <Image Height="64" Width="64" Margin="0,0,0,5" Source="/resources/images/basePhisicalDiskImg.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    <Button Style="{StaticResource ButtonSecondarySmall}" Content="Удалить" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=DeletePhisicalDiskCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}"/>
+                                                </StackPanel>
+                                                <TextBox DockPanel.Dock="Top" Text="{Binding Path=Model}" Style="{StaticResource TextBoxMediumStyle}" Margin="0,0,0,5" TextWrapping="Wrap"/>
+                                                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                                    <TextBlock Text="Тип:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <ComboBox SelectedItem="{Binding DiskType}" ItemsSource="{x:Static mm:StaticCatalogs.DiskTypeCatalog}" Width="70" HorizontalAlignment="Left" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                                    <ComboBox Text="{Binding FormFactor}" ItemsSource="{Binding Path=FormFactorCatalog}" Width="80" DockPanel.Dock="Right" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                                    <TextBlock Text="Форм-фактор:  " DockPanel.Dock="Right" HorizontalAlignment="Right" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                                    <TextBlock Text="Интерфейс:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <ComboBox SelectedValue="{Binding Interface}" ItemsSource="{Binding Path=InterfaceCatalog}" HorizontalAlignment="Stretch"  Style="{StaticResource ComboBoxMediumStyle}"/>
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <TextBlock Text="Объем памяти (ГБ):  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <TextBox Text="{Binding Memory}" Style="{StaticResource TextBoxMediumStyle}" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox DockPanel.Dock="Top" Header="Оперативная память" VerticalAlignment="Top" Style="{StaticResource GroupBoxMediumStyle}">
+                            <StackPanel>
+                                <Button Style="{StaticResource ButtonSecondarySmall}" Content="Добавить" Command="{Binding Path=AddRamModuleCommand}" Width="150" HorizontalAlignment="Left"/>
+                                <ListBox Style="{StaticResource ListBoxNoScrollStyle}" ItemContainerStyle="{StaticResource UnselectableListBoxItemStyle}" Margin="0,15,0,0" ItemsSource="{Binding Path=ComputerView.RamModules}" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,0,0,5">
+                                                <StackPanel Width="64" Margin="0,0,10,0" VerticalAlignment="Top">
+                                                    <Image Height="64" Width="64" Margin="0,0,0,5" Source="/resources/images/baseRamModuleImg.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                                    <Button Style="{StaticResource ButtonSecondarySmall}" Content="Удалить" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=DeleteRamModuleCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}"/>
+                                                </StackPanel>
+                                                <TextBox DockPanel.Dock="Top" Text="{Binding Path=Model}" Style="{StaticResource TextBoxMediumStyle}" Margin="0,0,0,5" TextWrapping="Wrap"/>
+                                                <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                                    <TextBlock Text="Тип памяти:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <ComboBox SelectedItem="{Binding RamType}" ItemsSource="{x:Static mm:StaticCatalogs.RamTypeCatalog}" Width="150" HorizontalAlignment="Left" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                                </DockPanel>
+                                                <DockPanel DockPanel.Dock="Top">
+                                                    <TextBlock Text="Объем памяти (ГБ):  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                    <TextBox Text="{Binding Memory}" Style="{StaticResource TextBoxMediumStyle}" Width="90" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                                </DockPanel>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </GroupBox>
+                    </DockPanel>
+                    <DockPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Monitor}" Margin="0,0,20,0">
+                        <GroupBox DockPanel.Dock="Top" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top" Margin="0,10">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <TextBlock Text="Диагональ (дюймы):  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=MonitorView.Diagonal}" Style="{StaticResource TextBoxMediumStyle}" Width="100"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Соотношение сторон:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=MonitorView.AspectRatio}" ItemsSource="{x:Static mm:StaticCatalogs.AspectRatioCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="70" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Тип матрицы:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=MonitorView.Matrix}" ItemsSource="{x:Static mm:StaticCatalogs.MatrixCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="120" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="Частота матрицы (ГЦ):  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=MonitorView.Frequency}" Style="{StaticResource TextBoxMediumStyle}" Width="70"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                                    <TextBlock Text="Разрешение:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=MonitorView.Resolution}" ItemsSource="{x:Static mm:StaticCatalogs.ResolutionCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="130" Padding="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                    </DockPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Keyboard}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5" Margin="0,10">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <TextBlock Text="Проводная: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox Style="{DynamicResource CheckBoxMediumStyle}" IsChecked="{Binding Path=KeyboardView.IsWired}"/>
+                                    <!--<RadioButton Style="{StaticResource RB_SetContent1}"/>-->
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Mouse}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5" Margin="0,10">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                    <TextBlock Text="Проводная: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox Style="{DynamicResource CheckBoxMediumStyle}" IsChecked="{Binding Path=MouseView.IsWired}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Camera}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Максимальное разрешение:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=CameraView.MaxResolution}" ItemsSource="{x:Static mm:StaticCatalogs.CameraMaxResolutionCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="120"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10">
+                                    <TextBlock Text="Поворотный механизм: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=CameraView.IsRotatable}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Встроенный микрофон: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=CameraView.HasMicro}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Headphones}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Проводные: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=HeadphonesView.IsWired}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="Встроенный микрофон: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=HeadphonesView.HasMicro}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Printer}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Максимальный формат печати:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=PrinterView.MaxFormat}" ItemsSource="{x:Static mm:StaticCatalogs.PrinterMaxFormatCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10">
+                                    <TextBlock Text="Технология печати:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=PrinterView.PrintTechnology}" ItemsSource="{x:Static mm:StaticCatalogs.PrintTechnologyCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Цвет печати:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=PrinterView.Color}" ItemsSource="{x:Static mm:StaticCatalogs.PrinterColorCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10">
+                                    <TextBlock Text="Автоматическая двусторонняя печать: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=PrinterView.DoubleSidedPrinting}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Встроенный режим сканнера: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=PrinterView.HasScanner}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=WiredTelephone}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Тип подключения:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=WiredTelephoneView.ConnectionType}" ItemsSource="{x:Static mm:StaticCatalogs.WiredTelephoneConnectionTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="230" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <TextBlock Text="ЖК-экран: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=WiredTelephoneView.HasScreen}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=BackupBattery}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="10" CornerRadius="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Количество розеток резервного питания:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=BackupBatteryView.SocketsCount}" Style="{StaticResource TextBoxMediumStyle}" Width="50"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10">
+                                    <TextBlock Text="Время работы без подзарядки (мин.):  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=BackupBatteryView.BatteryLife}" Style="{StaticResource TextBoxMediumStyle}" Width="70"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Тип батареи:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=BackupBatteryView.BatteryType}" ItemsSource="{x:Static mm:StaticCatalogs.BatteryTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="200" Padding="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=SelectedTab, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=SurgeProtector}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="10" CornerRadius="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Количество розеток:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SurgeProtectorView.SocketsCount}" Style="{StaticResource TextBoxMediumStyle}" Width="50"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,10">
+                                    <TextBlock Text="Встроенный выключатель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SurgeProtectorView.HasSwitcher}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Проводной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SurgeProtectorView.HasWire}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+        </DockPanel>
+
+    </Grid>
+</Window>

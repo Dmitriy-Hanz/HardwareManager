@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\User\source\repos\HardwareManager\HardwareManager\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="view\AdminMailWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\ChooseNewHardwareTypeWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\EditCabinetWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\EditHardwareWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\EditRequestWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\EditWireWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\EditWorkPlaceWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\HardwareAddingOptionsWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\HistoryWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\InventoryWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\LoginWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\OrganizationWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\SearchWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\SelectHardwareFromInventoryWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\UserMailWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\UserViewWorkplaceWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\ViewHardwareWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\ViewWireWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\ViewWorkplaceWin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="view\AdminMailWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\ChooseNewHardwareTypeWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\EditCabinetWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\EditHardwareWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\EditRequestWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\EditWireWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\EditWorkPlaceWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\HardwareAddingOptionsWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\HistoryWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\InventoryWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\LoginWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\MainMenuWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\OrganizationWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\resources\JustForTestsR.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\resources\MyResources.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\SearchWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\SelectHardwareFromInventoryWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\UserMailWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\UserViewWorkplaceWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\ViewHardwareWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\ViewWireWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\ViewWorkplaceWin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

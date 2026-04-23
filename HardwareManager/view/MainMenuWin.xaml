@@ -1,0 +1,51 @@
+﻿<Window x:Class="HardwareManager.view.MainMenuWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:HardwareManager.view"
+            xmlns:vm="clr-namespace:HardwareManager.viewModel"
+        mc:Ignorable="d"
+        Title="MainMenuWin" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <vm:MainMenuVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/view/resources/MyResources.xaml"/>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="/resources/images/Fon.bmp" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+    </Window.Background>
+    <Grid x:Name="WindowMainContainer" Height="430" Width="800">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Padding="20,20,40,20">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" SpreadMethod="Pad">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform CenterY="0.5" CenterX="0.5"/>
+                            <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                            <RotateTransform Angle="90" CenterX="0.5" CenterY="0.5"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Color="Transparent"/>
+                    <GradientStop Color="#BFFFFFFF" Offset="0.059"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <DockPanel Grid.Column="0" Margin="0,10">
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Top" Content="Организация" HorizontalAlignment="Stretch" Command="{Binding Path=OrganizationCommand}" Margin="0,0,0,10"/>
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Top" Content="Инвентарь" HorizontalAlignment="Stretch" Command="{Binding Path=InventoryCommand}" Margin="0,0,0,10"/>
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Top" Content="Поисковик" HorizontalAlignment="Stretch" Command="{Binding Path=FinderCommand}" Margin="0,0,0,10"/>
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Top" Content="Почта" HorizontalAlignment="Stretch" Command="{Binding Path=MailCommand}" Margin="0,0,0,10"/>
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Top" Content="Справка" HorizontalAlignment="Stretch" Command="{Binding Path=ManualCommand}" Margin="0,0,0,10"/>
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Content="Выход" HorizontalAlignment="Stretch" Command="{Binding Path=ExitCommand}"/>
+                <Button Style="{DynamicResource ButtonPrimary}" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Content="Журнал" HorizontalAlignment="Stretch" Command="{Binding Path=HistoryCommand}" Margin="0,0,0,10"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

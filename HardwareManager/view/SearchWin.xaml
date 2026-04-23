@@ -1,0 +1,382 @@
+﻿ <Window x:Class="HardwareManager.view.SearchWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:HardwareManager.view"
+            xmlns:vm="clr-namespace:HardwareManager.viewModel"
+            xmlns:mm="clr-namespace:HardwareManager.model"
+            xmlns:conv="clr-namespace:HardwareManager.infrastructure.utils.converters"
+        mc:Ignorable="d"
+        Title="SearchWin" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <vm:SearchVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/view/resources/MyResources.xaml"/>
+    </Window.Resources>
+    <Grid x:Name="WindowMainContainer" Height="550" Width="800">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.Column="0" Margin="10">
+            <TextBlock Text="Поиск" DockPanel.Dock="Top" Style="{StaticResource TextBlockLargeStyle}"/>
+            <Expander DockPanel.Dock="Bottom" Header="Поиск" FontFamily="Tahoma" FontSize="20" FontWeight="Bold" Foreground="#FF131373" BorderBrush="Gray" ExpandDirection="Up" Style="{StaticResource ExpanderStyle1Vertical}" Margin="0,5,0,0" IsExpanded="True">
+                <DockPanel Height="250" Margin="10">
+                    <StackPanel DockPanel.Dock="Bottom"  Orientation="Horizontal">
+                        <Button Content="Поиск" Width="120" Margin="0,0,10,0" Style="{StaticResource ButtonSecondary}" Command="{Binding Path=SearchCommand}"/>
+                        <Button Content="Очистить фильтры" Width="220" Style="{StaticResource ButtonSecondary}" Command="{Binding Path=ClearFiltersCommand}"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" Margin="0,0,0,5">
+                        <TextBlock Text="Тип оборудования:  " Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Left"/>
+                        <ComboBox SelectedValue="{Binding Path=SearchCriteria.HardwareName}" ItemsSource="{x:Static mm:StaticCatalogs.AllHardwareNamesCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="300" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Top" Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,20,0" Visibility="{Binding Path=SearchCriteria.HardwareClass, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Hardware}">
+                            <TextBlock Text="Инвентарный номер:  " Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Left"/>
+                            <TextBox Text="{Binding Path=SearchCriteria.InventorialNumber, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" Width="130"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,20,0" Visibility="{Binding Path=SearchCriteria.HardwareClass, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Wire}">
+                            <TextBlock Text="Количество:  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                            <TextBox Text="{Binding Path=SearchCriteria.ItemCountMin, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" HorizontalAlignment="Left" MinWidth="30"/>
+                            <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                            <TextBox Text="{Binding Path=SearchCriteria.ItemCountMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" HorizontalAlignment="Left" MinWidth="30"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Статус: " Style="{StaticResource TextBlockMediumStyle}"/>
+                            <ComboBox SelectedValue="{Binding Path=SearchCriteria.InventorialStatus}" ItemsSource="{x:Static mm:StaticCatalogs.InventorialStatusCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Separator DockPanel.Dock="Top" Height="10"/>
+
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                        <TextBlock Text="Модель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                        <TextBox Text="{Binding Path=SearchCriteria.Model}" Style="{StaticResource TextBoxMediumStyle}"/>
+                    </DockPanel>
+
+                    <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" Padding="0,0,10,0" CanContentScroll="False">
+                        <StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Computer}">
+                                <GroupBox Header="Процессор" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top">
+                                    <DockPanel>
+                                        <Image Height="64" VerticalAlignment="Top" Width="64" Source="/resources/images/baseCpuImg.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,10,0"/>
+                                        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                            <TextBlock Text="Модель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.CpuModel}" Style="{StaticResource TextBoxMediumStyle}"/>
+                                        </DockPanel>
+                                        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,0,0,5">
+                                            <TextBlock Text="Число ядер:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding SearchCriteria.CoreCount}" Width="40" Margin="0,0,20,0" Style="{StaticResource TextBoxMediumStyle}"/>
+                                            <TextBlock Text="Тип кэш-памяти:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <ComboBox Text="{Binding SearchCriteria.CashMemoryType}" Width="50" Margin="0,0,20,0" ItemsSource="{x:Static mm:StaticCatalogs.CashMemoryTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                        </StackPanel>
+                                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                            <TextBlock Text="Объем кэш-памяти (МБ):  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.CashMemoryValueMin, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="40"/>
+                                            <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.CashMemoryValueMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="40"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox DockPanel.Dock="Top" Header="Графический адаптер" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top">
+                                    <DockPanel>
+                                        <Image Height="64" VerticalAlignment="Top" Width="64" Source="/resources/images/baseGraphicalAdapterImg.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,10,0"/>
+                                        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                            <TextBlock Text="Модель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.GraphicalAdapterModel}" Style="{StaticResource TextBoxMediumStyle}"/>
+                                        </DockPanel>
+                                        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,0,0,5">
+                                            <TextBlock Text="Граф. процессор:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.GraphicalProcessor}" Width="300" Style="{StaticResource TextBoxMediumStyle}"/>
+                                        </StackPanel>
+                                        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" Orientation="Horizontal">
+                                            <TextBlock Text="Видеопамять (ГБ):  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.RamMemoryMin, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="40"/>
+                                            <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.RamMemoryMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="40"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox DockPanel.Dock="Top" Header="Физический диск" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top">
+                                    <DockPanel>
+                                        <Image Height="64" VerticalAlignment="Top" Width="64" Source="/resources/images/basePhisicalDiskImg.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,10,0"/>
+                                        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                            <TextBlock Text="Модель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.PhisicalDiskModel}" Style="{StaticResource TextBoxMediumStyle}"/>
+                                        </DockPanel>
+                                        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,0,0,5">
+                                            <TextBlock Text="Тип:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <ComboBox Text="{Binding Path=SearchCriteria.DiskType}" Width="70" Margin="0,0,20,0" ItemsSource="{x:Static mm:StaticCatalogs.CashMemoryTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                            <TextBlock Text="Форм-фактор:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <ComboBox Text="{Binding Path=SearchCriteria.FormFactor}" Width="90" Margin="0,0,20,0" ItemsSource="{x:Static mm:StaticCatalogs.FormFactorCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                            <TextBlock Text="Интерфейс:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <ComboBox Text="{Binding Path=SearchCriteria.DiskInterface}" Width="169" ItemsSource="{x:Static mm:StaticCatalogs.DiskInterfaceCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                        </StackPanel>
+                                        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" Orientation="Horizontal">
+                                            <TextBlock Text="Объем памяти (ГБ):  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.PhisicalDiskMemoryMin, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="70"/>
+                                            <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.PhisicalDiskMemoryMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="70"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox DockPanel.Dock="Top" Header="Оперативная память" BorderBrush="#FF131373" FontFamily="Tahoma" FontSize="16" Foreground="#FF131373" FontWeight="Bold" Padding="5,10" VerticalAlignment="Top" Margin="0,0,0,10">
+                                    <DockPanel>
+                                        <Image Height="64" VerticalAlignment="Top" Width="64" Source="/resources/images/baseRamModuleImg.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,10,0"/>
+                                        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,5">
+                                            <TextBlock Text="Модель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.RamModuleModel}" Style="{StaticResource TextBoxMediumStyle}"/>
+                                        </DockPanel>
+                                        <StackPanel DockPanel.Dock="Top" VerticalAlignment="Top" Orientation="Horizontal">
+                                            <TextBlock Text="Тип:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <ComboBox Text="{Binding Path=SearchCriteria.RamType}" Width="200" Margin="0,0,20,0" ItemsSource="{x:Static mm:StaticCatalogs.RamTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                            <TextBlock Text="Объем памяти (ГБ):  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.PhisicalDiskMemoryMin, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="50"/>
+                                            <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                            <TextBox Text="{Binding Path=SearchCriteria.PhisicalDiskMemoryMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="50"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </GroupBox>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Monitor}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Диагональ (дюймы):  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.Diagonal, Converter={conv:StringToDoubleConverter}}" Width="60" Margin="0,0,20,0" Style="{StaticResource TextBoxMediumStyle}"/>
+                                    <TextBlock Text="Соотношение сторон:  " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.AspectRatio}" ItemsSource="{x:Static mm:StaticCatalogs.AspectRatioCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="70"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Тип матрицы:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox SelectedValue="{Binding Path=SearchCriteria.Matrix}" Margin="0,0,20,0" Width="120" ItemsSource="{x:Static mm:StaticCatalogs.MatrixCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                    <TextBlock Text="Частота матрицы (ГЦ):  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.FrequencyMin}" Style="{StaticResource TextBoxMediumStyle}" Width="70"/>
+                                    <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.FrequencyMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="70"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                                    <TextBlock Text="Разрешение:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.Resolution}" Width="130" ItemsSource="{x:Static mm:StaticCatalogs.ResolutionCatalog}" Style="{StaticResource ComboBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Keyboard}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Проводная: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.KeyboardIsWired}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Mouse}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Проводная: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.MouseIsWired}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Camera}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Максимальное разрешение:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.CameraMaxResolution}" ItemsSource="{x:Static mm:StaticCatalogs.CameraMaxResolutionCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="120"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Поворотный механизм: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.CameraIsRotatable}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Встроенный микрофон: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.CameraHasMicro}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Headphones}">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                    <TextBlock Text="Проводные: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.CameraIsRotatable}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Встроенный микрофон: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.CameraHasMicro}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Printer}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Максимальный формат печати:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.PrinterMaxFormat}" ItemsSource="{x:Static mm:StaticCatalogs.PrinterMaxFormatCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Технология печати:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.PrinterPrintTechnology}" ItemsSource="{x:Static mm:StaticCatalogs.PrintTechnologyCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Цвет печати:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.PrinterColor}" ItemsSource="{x:Static mm:StaticCatalogs.PrinterColorCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Автоматическая двусторонняя печать: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.PrinterDoubleSidedPrinting}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Встроенный режим сканнера: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.PrinterHasScanner}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=WiredTelephone}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Тип подключения:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.TelephoneConnectionType}" ItemsSource="{x:Static mm:StaticCatalogs.WiredTelephoneConnectionTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="150" Padding="5,3,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                    <TextBlock Text="ЖК-экран: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.TelephoneHasScreen}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=BackupBattery}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Количество розеток резервного питания:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.BackupBatterySocketsCount, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" Width="50"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Время работы без подзарядки (мин.):  От:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.BatteryLifeMin}" Style="{StaticResource TextBoxMediumStyle}" Width="70"/>
+                                    <TextBlock Text=" До:" Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.BatteryLifeMax, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" MinWidth="70"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Тип батареи:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox Text="{Binding Path=SearchCriteria.BatteryType}" ItemsSource="{x:Static mm:StaticCatalogs.BatteryTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="200" Padding="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=SurgeProtector}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Количество розеток:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <TextBox Text="{Binding Path=SearchCriteria.SurgeProtectorSocketsCount, Converter={conv:StringToIntConverter}}" Style="{StaticResource TextBoxMediumStyle}" Width="50"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Встроенный выключатель: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.SurgeProtectorHasSwitcher}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Проводной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <CheckBox IsChecked="{Binding Path=SearchCriteria.SurgeProtectorHasWire}" Style="{DynamicResource CheckBoxMediumStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Cable}" Width="500" HorizontalAlignment="Left">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Тип разъема:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox SelectedValue="{Binding Path=SearchCriteria.CableConnectorType}" ItemsSource="{x:Static mm:StaticCatalogs.WireConnectorTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="190"/>
+                                </StackPanel>
+                                <Image Source="/resources/images/cable_illustration.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="10"/>
+                                <DockPanel Margin="0,5,0,5">
+                                    <TextBlock Text="   Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=SearchCriteria.CableIsInputFirst}"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=SearchCriteria.CableIsInputSecond}"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="True"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="True"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding Path=SearchCriteria.HardwareType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=AdapterCable}" Width="500" HorizontalAlignment="Left">
+                                <StackPanel Margin="0,5" Orientation="Horizontal">
+                                    <TextBlock Text="Проводной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="HasWireRB" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=SearchCriteria.AdapterHasWire}"/>
+                                    <TextBlock Margin="20,0,0,0" Text="Цельноблочный: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="HasWireRB" Style="{DynamicResource RadioButtonMediumStyle}"/>
+                                </StackPanel>
+                                <Image Source="/resources/images/cable_illustration.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="10"/>
+                                <DockPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Тип разъема:  " Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Left"/>
+                                        <ComboBox SelectedValue="{Binding Path=SearchCriteria.AdapterFirstConnectorType}" Margin="0,5" ItemsSource="{x:Static mm:StaticCatalogs.WireConnectorTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="190" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                    <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                        <TextBlock Text="Тип разъема:  " Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Left"/>
+                                        <ComboBox SelectedValue="{Binding Path=SearchCriteria.AdapterSecondConnectorType}" Margin="0,5" ItemsSource="{x:Static mm:StaticCatalogs.WireConnectorTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="190" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <DockPanel Margin="0,5,0,5">
+                                    <TextBlock Text="   Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=SearchCriteria.AdapterIsInputFirst}"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=SearchCriteria.AdapterIsInputSecond}"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="True"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="True"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </DockPanel>
+            </Expander>
+            <TabControl DockPanel.Dock="Top" Margin="0,5,0,0" FontFamily="Microsoft YaHei" FontWeight="Bold" SelectedIndex="{Binding Path=HardwareTabSelectedIndex}">
+                <TabItem Header="Оборудование" IsSelected="True" Foreground="#FF131373">
+                    <ListBox ItemsSource="{Binding Path=MainHardwareList}" SelectedIndex="0" HorizontalContentAlignment="Stretch" Padding="0,3" BorderThickness="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="1" BorderBrush="Black" Padding="5">
+                                    <DockPanel>
+                                        <Image Width="50" Height="50" Margin="0,0,10,0" VerticalAlignment="Top" Tag="{Binding Path=HardwareType}" RenderOptions.BitmapScalingMode="HighQuality" Style="{StaticResource HardwareSmallIconImageStyle}"/>
+                                        <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10,0,0,0">
+                                            <Button Content="Обзор" Width="140" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=ViewHardwareCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                            <Button Content="Редактировать" Margin="0,5" Width="140" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=EditHardwareCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                            <Button Content="Списать" Width="140" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=WriteOffHardwareCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Stretch">
+                                            <StackPanel HorizontalAlignment="Stretch">
+                                                <TextBlock Text="{Binding Path=HardwareName}" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                <TextBlock Text="{Binding Path=Model}" Style="{StaticResource TextBlockMediumInformalStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <DockPanel DockPanel.Dock="Top" Margin="0,5,0,0">
+                                                <TextBlock Text="Инв. номер: " Width="100" HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                <TextBlock Text="{Binding Path=InventorialNumber}" Style="{StaticResource TextBlockMediumInformalStyle}" HorizontalAlignment="Left" Width="100"/>
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Path=InventorialStatus}" Style="{StaticResource TextBlockMediumInformalStyle}" Width="100"/>
+                                                <TextBlock DockPanel.Dock="Right" Text="Статус: " FontSize="15" Foreground="#FF131373" FontWeight="Bold" FontFamily="Tahoma" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </TabItem>
+                <TabItem Header="Провода, кабели" Foreground="#FF131373">
+                    <ListBox ItemsSource="{Binding Path=WiresList}" ItemContainerStyle="{StaticResource UnselectableListBoxItemStyle}" SelectedIndex="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0,3" BorderThickness="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="1" BorderBrush="Black" Padding="5">
+                                    <DockPanel>
+                                        <Image Width="53" Height="53" Margin="0,0,10,0" VerticalAlignment="Top" Tag="{Binding Path=WireType}" RenderOptions.BitmapScalingMode="HighQuality" Style="{StaticResource HardwareSmallIconImageStyle}"/>
+                                        <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="10,0,0,0">
+                                            <Button Content="Обзор" Width="140" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=ViewHardwareCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                            <Button Content="Редактировать" Margin="0,5" Width="140" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=EditHardwareCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                            <Button Content="Списать" Width="140" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=WriteOffHardwareCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                        </StackPanel>
+                                        <StackPanel HorizontalAlignment="Stretch">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Path=WireName}" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                <TextBlock Text="{Binding Path=Model}" Style="{StaticResource TextBlockMediumInformalStyle}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <DockPanel Margin="0,15,0,0">
+                                                <TextBlock Text="Количество:   " HorizontalAlignment="Left" Style="{StaticResource TextBlockMediumStyle}"/>
+                                                <TextBlock Text="{Binding Path=ItemCount, StringFormat='\{0\} шт.'}" Style="{StaticResource TextBlockMediumInformalStyle}" HorizontalAlignment="Left"/>
+                                                <TextBlock DockPanel.Dock="Right" Text="{Binding Path=InventorialStatus}" Style="{StaticResource TextBlockMediumInformalStyle}" Width="100"/>
+                                                <TextBlock DockPanel.Dock="Right" Text="Статус: " FontSize="15" Foreground="#FF131373" FontWeight="Bold" FontFamily="Tahoma" HorizontalAlignment="Right"/>
+                                            </DockPanel>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+        <Button Content="В главное меню" Grid.Row="1" VerticalAlignment="Bottom" Style="{StaticResource ButtonPrimary}" Margin="20" Command="{Binding Path=BackToMainMenuCommand}" Width="250" HorizontalAlignment="Left"/>
+    </Grid>
+</Window>

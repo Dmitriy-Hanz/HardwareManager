@@ -1,0 +1,75 @@
+﻿<Window x:Class="HardwareManager.view.OrganizationWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:HardwareManager.view"
+            xmlns:vm="clr-namespace:HardwareManager.viewModel"
+        mc:Ignorable="d"
+        Title="OrganizationWin" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <vm:OrganizationVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/view/resources/MyResources.xaml"/>
+    </Window.Resources>
+    <Grid x:Name="WindowMainContainer" Height="550" Width="900">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.6*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0" Grid.Column="0" Margin="10">
+            <TextBlock Text="Кабинеты" DockPanel.Dock="Top" Style="{StaticResource TextBlockLargeStyle}"/>
+            <Button Content="Новый кабинет" DockPanel.Dock="Bottom" Style="{StaticResource ButtonSecondary}" Command="{Binding Path=CreateNewCabinetCommand}"/>
+            <ListBox DockPanel.Dock="Top" Margin="0,5" ItemsSource="{Binding Path=CabinetList}" SelectedItem="{Binding Path=SelectedCabinet}" SelectedIndex="0" HorizontalContentAlignment="Stretch" Padding="0,3">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Black" Padding="5">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Text="{Binding Path=Name}" Style="{StaticResource TextBlockMediumStyle}" TextWrapping="Wrap"/>
+                                <Separator DockPanel.Dock="Top" Height="10"/>
+                                <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                    <Button VerticalAlignment="Bottom" Content="Редактировать" Width="150" Margin="0,0,5,0" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=EditCabinetCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                    <Button VerticalAlignment="Bottom" Content="Удалить" Width="100" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=DeleteCabinetCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <DockPanel Grid.Row="0" Grid.Column="1" Margin="10">
+            <TextBlock Text="Рабочие места" DockPanel.Dock="Top" Style="{StaticResource TextBlockLargeStyle}"/>
+            <UniformGrid Columns="2" Rows="1" DockPanel.Dock="Bottom" >
+                <Button Content="Новое рабочее место" Style="{StaticResource ButtonSecondary}" Command="{Binding Path=CreateNewWorkPlaceCommand}" Visibility="{Binding Path=CreateNewWorkPlaceButtonVisibility}"/>
+            </UniformGrid>
+            <ListBox DockPanel.Dock="Bottom" Margin="0,5" ItemsSource="{Binding Path=SelectedCabinet.WorkPlaceList}" SelectedItem="{Binding Path=SelectedWorkplace}" HorizontalContentAlignment="Stretch" Padding="0,3">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="Black" Padding="5">
+                            <DockPanel>
+                                <TextBlock Text="{Binding Path=Name}" Style="{StaticResource TextBlockMediumStyle}" TextWrapping="Wrap"/>
+                                <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="20,0,0,0">
+                                    <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Margin="0,0,0,5">
+                                        <Button Content="Обзор" Width="80" Margin="0,0,5,0"  DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=ViewWorkplaceCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                        <Button Content="Удалить" Width="80" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=DeleteWorkPlaceCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                    </DockPanel>
+                                    <Button Content="Редактировать"   DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext}" Command="{Binding Path=EditWorkPlaceCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=Content}" Style="{StaticResource ButtonSecondarySmall}"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <Button Content="В главное меню" Grid.Row="1" VerticalAlignment="Bottom" Style="{StaticResource ButtonPrimary}" Margin="10" Command="{Binding Path=BackToMainMenuCommand}"/>
+
+    </Grid>
+</Window>

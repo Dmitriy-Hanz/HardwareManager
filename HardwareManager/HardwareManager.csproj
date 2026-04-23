@@ -1,0 +1,192 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="infrastructure\utils\database\AnimatedLoadingImg.png" />
+    <None Remove="infrastructure\utils\database\dbcfg.ini" />
+    <None Remove="resources\images\baseCpuImg.png" />
+    <None Remove="resources\images\baseGraphicalAdapterImg.png" />
+    <None Remove="resources\images\basePhisicalDiskImg.png" />
+    <None Remove="resources\images\baseRamModuleImg.png" />
+    <None Remove="resources\images\Button_History.bmp" />
+    <None Remove="resources\images\cable_illustration.png" />
+    <None Remove="resources\images\Fon.bmp" />
+    <None Remove="resources\images\fon_workplace.png" />
+    <None Remove="resources\images\icon_adapter_cable_medium.png" />
+    <None Remove="resources\images\icon_adapter_cable_small.png" />
+    <None Remove="resources\images\icon_backup_battery_medium.png" />
+    <None Remove="resources\images\Icon_backup_battery_small.png" />
+    <None Remove="resources\images\icon_cable_medium.png" />
+    <None Remove="resources\images\icon_cable_small.png" />
+    <None Remove="resources\images\Icon_camera_medium.png" />
+    <None Remove="resources\images\Icon_camera_small.png" />
+    <None Remove="resources\images\Icon_computer_medium.png" />
+    <None Remove="resources\images\Icon_computer_small.jpg" />
+    <None Remove="resources\images\Icon_computer_small.png" />
+    <None Remove="resources\images\Icon_create_new.png" />
+    <None Remove="resources\images\Icon_from_inventory.png" />
+    <None Remove="resources\images\Icon_headphones_medium.png" />
+    <None Remove="resources\images\Icon_headphones_small.png" />
+    <None Remove="resources\images\Icon_keyboard_medium.png" />
+    <None Remove="resources\images\Icon_keyboard_small.png" />
+    <None Remove="resources\images\Icon_Manual.bmp" />
+    <None Remove="resources\images\Icon_monitor_medium.png" />
+    <None Remove="resources\images\Icon_monitor_small.png" />
+    <None Remove="resources\images\Icon_mouse_medium.png" />
+    <None Remove="resources\images\Icon_mouse_small.png" />
+    <None Remove="resources\images\Icon_printer_medium.png" />
+    <None Remove="resources\images\Icon_printer_small.png" />
+    <None Remove="resources\images\Icon_surge_protector_medium.png" />
+    <None Remove="resources\images\Icon_surge_protector_small.png" />
+    <None Remove="resources\images\icon_wired_telephone_medium.png" />
+    <None Remove="resources\images\Icon_wired_telephone_small.png" />
+    <None Remove="resources\images\noImageForHardware.png" />
+    <None Remove="resources\images\TooltipIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources\textFiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="infrastructure\utils\database\AnimatedLoadingImg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="infrastructure\utils\database\dbcfg.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\baseCpuImg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\baseGraphicalAdapterImg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\basePhisicalDiskImg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\baseRamModuleImg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Button_History.bmp">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\cable_illustration.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Fon.bmp">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\fon_workplace.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\icon_adapter_cable_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\icon_adapter_cable_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\icon_backup_battery_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_backup_battery_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\icon_cable_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\icon_cable_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_camera_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_camera_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_computer_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_computer_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_create_new.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_from_inventory.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_headphones_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_headphones_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_keyboard_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_keyboard_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_Manual.bmp">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_monitor_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_monitor_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_mouse_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_mouse_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_printer_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_printer_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_surge_protector_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_surge_protector_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\icon_wired_telephone_medium.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\Icon_wired_telephone_small.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\noImageForHardware.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="resources\images\TooltipIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="dbcfg.ini">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="HardwareManagerManual.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

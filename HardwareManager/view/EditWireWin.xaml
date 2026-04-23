@@ -1,0 +1,119 @@
+﻿ <Window x:Class="HardwareManager.view.EditWireWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local="clr-namespace:HardwareManager.view"
+            xmlns:vm="clr-namespace:HardwareManager.viewModel"
+            xmlns:mm="clr-namespace:HardwareManager.model"
+            xmlns:conv="clr-namespace:HardwareManager.infrastructure.utils.converters"
+        mc:Ignorable="d"
+        Title="EditWireWin" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <vm:EditWireVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary Source="/view/resources/MyResources.xaml"/>
+    </Window.Resources>
+    <Grid x:Name="WindowMainContainer" Height="400" Width="700">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="20" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border Height="200" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
+                <Grid>
+                    <Image RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Source="/resources/images/noImageForHardware.png"/>
+                    <Image Source="{Binding Path=WireView.HardwareImage, Converter={conv:BytesToImageConverter}}" RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill"/>
+                </Grid>
+            </Border>
+            <Button DockPanel.Dock="Top" Style="{StaticResource ButtonSecondary}" Content="Загрузить изображение" FontSize="14" Command="{Binding Path=AddImageCommand}" Margin="0,5"/>
+            <Button Style="{StaticResource ButtonSecondary}" Content="Удалить изображение" FontSize="14" Command="{Binding Path=DeleteHardwareImageCommand}" Visibility="{Binding Path=DeleteHardwareImageButtonVisibility}"/>
+        </DockPanel>
+        <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource ButtonPrimary}" Content="Сохранить" Command="{Binding Path=SaveCommand}" Margin="20,0" VerticalAlignment="Bottom"/>
+        <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource ButtonPrimary}" Content="Выйти" Command="{Binding Path=ExitCommand}" Margin="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200"/>
+
+        <DockPanel Grid.Column="1" Grid.RowSpan="3">
+            <TextBlock Text="{Binding Path=HardwareHeaderText, StringFormat='\{0\}:'}" DockPanel.Dock="Top" FontSize="30" FontFamily="Segoe UI Black" TextWrapping="Wrap" Foreground="#FF131373" Margin="0,8,0,0"/>
+            <TextBox Text="{Binding Path=WireView.Model}" Style="{StaticResource TextBoxMediumStyle}" DockPanel.Dock="Top" Margin="0,5,20,0"/>
+            <DockPanel DockPanel.Dock="Top" Margin="0,5,20,5">
+                <TextBlock Text="Количество: " Width="100" FontSize="15" Foreground="#FF131373" HorizontalAlignment="Left" FontFamily="Tahoma" FontWeight="Bold"/>
+                <TextBox Text="{Binding Path=WireView.ItemCount}" Style="{StaticResource TextBoxMediumStyle}" HorizontalAlignment="Left" Width="50"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Visibility="{Binding Path=HardwareStatusPanelVisibility}">
+                    <TextBlock Text="Статус: " Style="{StaticResource TextBlockMediumStyle}"/>
+                    <TextBox Text="{Binding Path=WireView.InventorialStatus}" Style="{StaticResource TextBoxMediumStyle}" Width="100" IsReadOnly="True"/>
+                </StackPanel>
+            </DockPanel>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,20">
+                <Grid Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ScrollViewer}, Path=ActualWidth}">
+                    <StackPanel Visibility="{Binding Path=WireView.WireType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=Cable}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5" Margin="0,10">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Тип разъема:  " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <ComboBox SelectedValue="{Binding Path=CableView.ConnectorType}" ItemsSource="{x:Static mm:StaticCatalogs.WireConnectorTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="190"/>
+                                </StackPanel>
+                                <Image Source="/resources/images/cable_illustration.png" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" Margin="10"/>
+                                <DockPanel Margin="0,5,0,5">
+                                    <TextBlock Text="   Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=CableView.IsInputFirst}"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=CableView.IsInputSecond}"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=CableView.IsInputFirst, Converter={StaticResource ReverseValueConverter}, Mode=OneTime}"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=CableView.IsInputSecond, Converter={StaticResource ReverseValueConverter}, Mode=OneTime}"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding Path=WireView.WireType, Converter={conv:MultiValueVisibilityConverter}, ConverterParameter=AdapterCable}" Margin="0,0,20,0">
+                        <Border BorderBrush="#FF131373" BorderThickness="1" Padding="5,10" CornerRadius="5" Margin="0,10">
+                            <StackPanel>
+                                <StackPanel Margin="0,5" Orientation="Horizontal">
+                                    <TextBlock Text="Проводной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="HasWireRB" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=AdapterCableView.HasWire}"/>
+                                    <TextBlock Margin="30,0,0,0" Text="Цельноблочный: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="HasWireRB" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=AdapterCableView.HasWire, Converter={StaticResource ReverseValueConverter}, Mode=OneTime}"/>
+                                </StackPanel>
+                                <Image Source="/resources/images/cable_illustration.png" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" Margin="10"/>
+                                <DockPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Тип разъема:  " Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Left"/>
+                                        <ComboBox SelectedValue="{Binding Path=AdapterCableView.FirstConnectorType}" Margin="0,5" ItemsSource="{x:Static mm:StaticCatalogs.WireConnectorTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="190" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                    <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                        <TextBlock Text="Тип разъема:  " Style="{StaticResource TextBlockMediumStyle}" HorizontalAlignment="Left"/>
+                                        <ComboBox SelectedValue="{Binding Path=AdapterCableView.SecondConnectorType}" Margin="0,5" ItemsSource="{x:Static mm:StaticCatalogs.WireConnectorTypeCatalog}" Style="{StaticResource ComboBoxMediumStyle}" Width="190" HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <DockPanel Margin="0,5,0,5">
+                                    <TextBlock Text="   Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=AdapterCableView.IsInputFirst}"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=AdapterCableView.IsInputSecond}"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Входной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                    <RadioButton GroupName="InputFirstRB" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=AdapterCableView.IsInputFirst, Converter={StaticResource ReverseValueConverter}, Mode=OneTime}"/>
+                                    <RadioButton GroupName="InputSecondRB" DockPanel.Dock="Right" HorizontalAlignment="Left" Style="{DynamicResource RadioButtonMediumStyle}" IsChecked="{Binding Path=AdapterCableView.IsInputSecond, Converter={StaticResource ReverseValueConverter}, Mode=OneTime}"/>
+                                    <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Text="Выходной: " Style="{StaticResource TextBlockMediumStyle}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+        </DockPanel>
+
+    </Grid>
+</Window>
